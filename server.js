@@ -6,7 +6,7 @@ var cors = require('cors');
 var tasks = require('./routes/tasks');
 var index = require('./routes/index');
 
-var port = 3000;
+var port = 80;
 
 var app = express();
 
