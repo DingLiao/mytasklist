@@ -5,10 +5,13 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var cors = require('cors');
+var session = require('express-session');
+var RedisStore = require('connect-redis')(session);
 var mongodb = require('./config/mongoose');
+var config = require('./config/env/development');
 
-var index = require('./routes/index');
-var users = require('./routes/users');
+var index = require('./app/routes/index');
+var users = require('./app/routes/user.server.routes');
 var tasks = require('./app/routes/task.server.routes');
 
 var db = mongodb();
@@ -26,6 +29,11 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.use(session({
+	store: new RedisStore(),
+	secret: config.sessionsecret,
+	cookie: { maxAge: config.sessionmaxage }
+}));
 app.use('/', index);
 app.use('/users', users);
 app.use('/api', tasks);
