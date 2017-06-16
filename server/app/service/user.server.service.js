@@ -3,7 +3,6 @@ var User = require('../models/user.server.model');
 var _ = require('lodash');
 var bcrypt = require('bcryptjs');
 var Q = require('q');
-var defer = Q.defer();
 
 var service = {};
 
@@ -17,10 +16,14 @@ service.delete = _delete;
 module.exports = service;
 
 function authenticate(username, password) {
+	var defer = Q.defer();
+
+	console.log('authenticate, username:' + username + ',password: ' + password);
 	User.findOne({username: username}, function(err, user) {
 		if(err) defer.reject(err.name + ':' + err.message);
 
 		if(user && bcrypt.compareSync(password, user.password)) {
+			console.log('find user: ' + user);
 			defer.resolve(user);
 		} else {
 			defer.resolve();
@@ -31,6 +34,8 @@ function authenticate(username, password) {
 }
 
 function getAll() {
+	var defer = Q.defer();
+
 	User.find({}, function(err, users){
 		if(err) defer.reject(err.name + ':' + err.message);
 
@@ -46,6 +51,8 @@ function getAll() {
 }
 
 function getById(_id) {
+	var defer = Q.defer();
+
 	User.findById(_id, function(err, user) {
 		if(err) defer.reject(err.name + ':' + err.message);
 
@@ -62,7 +69,9 @@ function getById(_id) {
 }
 
 function create(userParam) {
-	User.findOne({username: username}, function(err, user) {
+	var defer = Q.defer();
+
+	User.findOne({username: userParam.username}, function(err, user) {
 		if(err) defer.reject(err.name + ':' + err.message);
 
 		if (user) {
@@ -83,7 +92,7 @@ function create(userParam) {
 			if(err) {
 				if (err) defer.reject(err.name + ': ' + err.message);
 			}
-			efer.resolove();
+			defer.resolve();
 		});
 	}
 
@@ -91,6 +100,8 @@ function create(userParam) {
 }
 
 function update(_id, userParam) {
+	var defer = Q.defer();
+
 	User.findById(_id, function(err, user) {
 		if(err) defer.reject(err.name + ':' + err.message);
 
@@ -127,6 +138,8 @@ function update(_id, userParam) {
 }
 
 function _delete(_id) {
+	var defer = Q.defer();
+
 	User.findByIdAndRemove(_id, function(err, user) {
 		if(err) {
 			defer.reject(err.name + ': ' + err.message);

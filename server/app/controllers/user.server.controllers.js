@@ -1,17 +1,20 @@
 var mongoose = require('mongoose');
 var userService = require('../service/user.server.service');
+var config = require('../../config/env/development');
+var jwt = require('jsonwebtoken');
 
 module.exports = {
 	authenticate: function(req, res, next) {
 		userService.authenticate(req.body.username, req.body.password)
 			.then(function(user){
 				if(user) {
-					return res.json(user);
+					return res.json({
+						_id: user._id,
+						username: user.username,
+						token: jwt.sign({sub: user._id}, config.sessionsecret)
+					});
 				} else {
-					var err = {
-						msg: 'Username or password is incorrect'
-					}
-					return next(err);
+					return res.status(403).json({ err: 'Username or password is incorrect'});
 				}
 			})
 			.catch(err => next(err));
@@ -24,6 +27,7 @@ module.exports = {
 			.catch(err => next(err));
 	},
 	getById: function(req, res, next) {
+		console.log('getById');
 		userService.getById(req.params.id)
 			.then(function(user) {
 				return res.json(user);
@@ -31,6 +35,7 @@ module.exports = {
 			.catch(err => next(err));
 	},
 	getAll: function(req, res, next) {
+		console.log('getAll');
 		userService.getAll()
 			.then(function(users){
 				return res.json(users);

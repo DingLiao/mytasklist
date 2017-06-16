@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { TaskService} from '../task.service';
-import { Task } from '../task';
+import { Router, ActivatedRoute, Params }   from '@angular/router';
+import 'rxjs/add/operator/switchMap';
+
+import { TaskService} from '../_services/task.service';
+import { Task } from '../_model/task';
 
 @Component({
   selector: 'app-task',
@@ -11,11 +14,21 @@ export class TaskComponent implements OnInit {
   tasks: Task[];
   title: string;
 
-  constructor(private taskService: TaskService) { 
+  constructor(private taskService: TaskService,
+    private router: Router,
+    private route: ActivatedRoute) { 
   }
 
   ngOnInit() {
-  	this.taskService.getTasks().subscribe(tasks => {this.tasks = tasks});
+    this.route.params
+      .switchMap((params: Params)=>{
+        console.log(params.userId);
+        return this.taskService.getTasks();
+      })
+      .subscribe(tasks => {this.tasks = tasks},
+        error => {
+          this.router.navigate(['/']);
+        });
   }
 
   addTask(event) {
