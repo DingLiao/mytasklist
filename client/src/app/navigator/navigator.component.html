@@ -14,7 +14,7 @@
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul *ngIf="currentUser" class="nav navbar-nav">
-        <li><a href="/tasklist/{{currentUser._id}}" class="navbar-link">My task</a></li>
+        <li><a href="/tasklist" class="navbar-link">My task</a></li>
       </ul>
       <ul *ngIf="currentUser; else signIn" class="nav navbar-nav navbar-right">
       	<li>

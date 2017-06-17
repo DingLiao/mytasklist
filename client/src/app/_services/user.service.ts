@@ -15,7 +15,7 @@ export class UserService {
   	headers.append('Content-Type', 'application/json');
   	return this.http.post(environment.apiUrl + '/users/register', user, {headers: headers})
   		.map(res => {
-   			return res.json()
+   			return res.json();
    		});
   }
 

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
+import { User } from '../_model/user';
 import { AuthenticationService } from '../_services/authentication.service';
 
 @Component({
@@ -12,12 +13,18 @@ export class LoginComponent implements OnInit {
   private loading = false;
   private returnUrl: string;
   private error: string;
+  private currentUser: User;
 
   constructor(private route: ActivatedRoute, 
   	private router: Router,
   	private authenticationService: AuthenticationService) { }
 
   ngOnInit() {
+  	this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+  	if(this.currentUser) {
+  		this.router.navigate(['/']);
+  	}
+
   }
 
   login() {
@@ -27,7 +34,6 @@ export class LoginComponent implements OnInit {
   		.subscribe(
   			data => {
   				this.loading = false;
-  				console.log('data: ' + JSON.stringify(data));
   				localStorage.setItem('currentUser', JSON.stringify(data));
   				this.router.navigate(['/']);
   			},
