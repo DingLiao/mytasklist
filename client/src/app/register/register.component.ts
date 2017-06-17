@@ -9,10 +9,10 @@ import { UserService } from '../_services/user.service';
   styleUrls: ['./register.component.css']
 })
 export class RegisterComponent implements OnInit {
-	private model: any = {};
-	private loading = false;
-	private error: string;
-	private currentUser: User;
+	model: any = {};
+	loading = false;
+	error: string;
+	currentUser: User;
 
   constructor(private router: Router,
   	private userService: UserService) { }

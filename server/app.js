@@ -12,8 +12,7 @@ var mongodb = require('./config/mongoose');
 var config = require('./config/env/development');
 
 var index = require('./app/routes/index');
-var users = require('./app/routes/user.server.routes');
-var tasks = require('./app/routes/task.server.routes');
+var apiRouters = require('./app/routes/index');
 
 var db = mongodb();
 var app = express();
@@ -27,7 +26,7 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, '../client/dist')));
 
 app.use(session({
 	store: new RedisStore(),
@@ -38,15 +37,11 @@ app.use(cors());
 app.use('/', index);
 
 // use JWT auth to secure the api
-app.use(expressJwt({ secret: config.sessionsecret }).unless({ path: ['/users/authenticate', '/users/register'] }));
-app.use('/users', users);
-app.use('/api', tasks);
+app.use(expressJwt({ secret: config.sessionsecret }).unless({ path: ['/api/users/authenticate', '/api/users/register', new RegExp('/static/tasklist.*/', 'i')] }));
+app.use('/api', apiRouters);
 
-// catch 404 and forward to error handler
-app.use(function(req, res, next) {
-  var err = new Error('Not Found');
-  err.status = 404;
-  next(err);
+app.all("/static/*", function(req, res, next) {
+    res.sendfile("index.html", { root: __dirname + "/../client/dist" });
 });
 
 // error handler

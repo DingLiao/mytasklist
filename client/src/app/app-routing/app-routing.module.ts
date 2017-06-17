@@ -8,11 +8,11 @@ import { RegisterComponent } from  '../register/register.component';
 import { HomeComponent } from '../home/home.component';
 
 const routes: Routes = [
-	{ path: '', redirectTo: '/home', pathMatch: 'full'},
-	{ path: 'home', component: HomeComponent },
-	{ path: 'tasklist', component: TaskComponent },
-	{ path: 'login', component: LoginComponent },
-	{ path: 'register', component: RegisterComponent }
+	{ path: '', redirectTo: '/static/home', pathMatch: 'full'},
+	{ path: 'static/home', component: HomeComponent },
+	{ path: 'static/tasklist', component: TaskComponent },
+	{ path: 'static/login', component: LoginComponent },
+	{ path: 'static/register', component: RegisterComponent }
 ];
 
 @NgModule({

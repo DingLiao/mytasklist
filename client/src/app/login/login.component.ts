@@ -9,11 +9,11 @@ import { AuthenticationService } from '../_services/authentication.service';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
-  private model: any = {};
-  private loading = false;
-  private returnUrl: string;
-  private error: string;
-  private currentUser: User;
+  model: any = {};
+  loading = false;
+  returnUrl: string;
+  error: string;
+  currentUser: User;
 
   constructor(private route: ActivatedRoute, 
   	private router: Router,

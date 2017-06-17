@@ -31,7 +31,7 @@ export class NavigatorComponent implements OnInit {
   	// remove user from local storage to log user out
   	localStorage.removeItem('currentUser');
   	this.currentUser=null;
-  	this.router.navigate(['/login']);
+  	this.router.navigate(['static/home']);
   }
 
 }

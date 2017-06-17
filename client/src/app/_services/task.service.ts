@@ -12,19 +12,19 @@ export class TaskService {
   }
 
   getTasks(userId){
-  	return this.http.get(environment.apiUrl + '/api/tasks/', this.jwt())
+  	return this.http.get(environment.apiUrl + '/tasks', this.jwt())
   		.map(res => res.json());
   }
 
   addTask(newTask) {
   	var headers = new Headers();
   	headers.append('Content-Type', 'application/json');
-  	return this.http.post(environment.apiUrl + '/api/task', JSON.stringify(newTask), this.jwt())
+  	return this.http.post(environment.apiUrl + '/tasks', JSON.stringify(newTask), this.jwt())
   		.map(res => res.json());
   }
 
   deleteTask(id) {
-  	return this.http.delete(environment.apiUrl + '/api/task/'+id, this.jwt())
+  	return this.http.delete(environment.apiUrl + '/tasks/'+id, this.jwt())
   		.map(res => {
         console.log('deleteTask server res: ' + res);
         if(res.status == 200) 
@@ -35,7 +35,7 @@ export class TaskService {
   updateStatus(task) {
   	var headers = new Headers();
   	headers.append('Content-Type', 'application/json');
-  	return this.http.put(environment.apiUrl + '/api/task/'+task._id, JSON.stringify(task), this.jwt())
+  	return this.http.put(environment.apiUrl + '/tasks/'+task._id, JSON.stringify(task), this.jwt())
   	  .map(res => res.json());
   }
 
