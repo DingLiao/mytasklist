@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-
+import { User } from '../_model/user';
 import { UserService } from '../_services/user.service';
 
 @Component({
@@ -11,11 +11,17 @@ import { UserService } from '../_services/user.service';
 export class RegisterComponent implements OnInit {
 	private model: any = {};
 	private loading = false;
+	private error: string;
+	private currentUser: User;
 
   constructor(private router: Router,
   	private userService: UserService) { }
 
   ngOnInit() {
+  	this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+  	if(this.currentUser) {
+  		this.router.navigate(['/']);
+  	}
   }
 
   register() {
@@ -28,6 +34,11 @@ export class RegisterComponent implements OnInit {
   			},
   			error => {
   				this.loading = false;
+  				if(error.status === 403) {
+  					this.error = 'Username already exists.';
+  				} else {
+  					this.error = error;
+  				}
   			}
   		);
 

@@ -16,7 +16,14 @@ export class NavigatorComponent implements OnInit {
   	private authenticationService: AuthenticationService) { }
 
   ngOnInit() {
-  	this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+  	this.authenticationService.currentUserObservable.subscribe(
+  		data=>{
+  			this.currentUser = data;
+  		}
+  	);
+
+  	if(!this.currentUser) 
+  		this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
   }
 
   signOut() {

@@ -21,8 +21,12 @@ module.exports = {
 	register: function(req, res, next) {
 		userService.create(req.body)
 			.then(function() {
-				return res.sendStatus(200);
-			})
+					return res.sendStatus(200);
+				},
+				function(reason) {
+					return res.status(403).json({ err: 'Username is already existing.'});
+				}
+			)
 			.catch(err => next(err));
 	},
 	getById: function(req, res, next) {
