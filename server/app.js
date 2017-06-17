@@ -39,7 +39,6 @@ app.use('/', index);
 
 // use JWT auth to secure the api
 app.use(expressJwt({ secret: config.sessionsecret }).unless({ path: ['/users/authenticate', '/users/register'] }));
-
 app.use('/users', users);
 app.use('/api', tasks);
 
@@ -54,6 +53,10 @@ app.use(function(req, res, next) {
 app.use(function(err, req, res, next) {
   // set locals, only providing error in development
   console.log('server err: ' + err.message);
+  if (err.name === "UnauthorizedError") {
+    res.status(401).send("invalid token");
+  }
+
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
 

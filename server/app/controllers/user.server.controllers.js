@@ -1,4 +1,3 @@
-var mongoose = require('mongoose');
 var userService = require('../service/user.server.service');
 var config = require('../../config/env/development');
 var jwt = require('jsonwebtoken');
@@ -11,7 +10,7 @@ module.exports = {
 					return res.json({
 						_id: user._id,
 						username: user.username,
-						token: jwt.sign({sub: user._id}, config.sessionsecret)
+						token: jwt.sign({userId: user._id}, config.sessionsecret)
 					});
 				} else {
 					return res.status(403).json({ err: 'Username or password is incorrect'});

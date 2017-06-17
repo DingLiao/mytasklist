@@ -4,6 +4,7 @@ import 'rxjs/add/operator/switchMap';
 
 import { TaskService} from '../_services/task.service';
 import { Task } from '../_model/task';
+import { User } from '../_model/user';
 
 @Component({
   selector: 'app-task',
@@ -13,6 +14,7 @@ import { Task } from '../_model/task';
 export class TaskComponent implements OnInit {
   tasks: Task[];
   title: string;
+  currentUser: User;
 
   constructor(private taskService: TaskService,
     private router: Router,
@@ -20,11 +22,9 @@ export class TaskComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.route.params
-      .switchMap((params: Params)=>{
-        console.log(params.userId);
-        return this.taskService.getTasks();
-      })
+    this.tasks = [];
+    this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    this.taskService.getTasks(this.currentUser._id)
       .subscribe(tasks => {this.tasks = tasks},
         error => {
           this.router.navigate(['/']);
@@ -40,6 +40,7 @@ export class TaskComponent implements OnInit {
   	}
 
   	this.taskService.addTask(newTask).subscribe(task => {
+      console.log(task);
   		this.tasks.push(task);
   		this.title= "";
   	});
