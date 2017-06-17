@@ -25,7 +25,11 @@ export class TaskService {
 
   deleteTask(id) {
   	return this.http.delete(environment.apiUrl + '/api/task/'+id, this.jwt())
-  		.map(res => res.json());
+  		.map(res => {
+        console.log('deleteTask server res: ' + res);
+        if(res.status == 200) 
+          return "ok";
+      });
   }
 
   updateStatus(task) {

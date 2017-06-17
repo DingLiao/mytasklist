@@ -32,11 +32,12 @@ module.exports = {
 		})
 	},
 	delete: function(req, res, next) {
-		console.log("delete, id: " + req.params._id);
+		console.log("delete, id: " + req);
 		Task.findByIdAndRemove(req.params._id, function(err, task){
 			if(err) {
 				return next(err);
 			}
+			return res.json(task);
 			
 		});
 	}

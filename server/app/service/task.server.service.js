@@ -103,7 +103,7 @@ function _delete(_id) {
 		if(err) {
 			defer.reject(err.name + ': ' + err.message);
 		}
-		defer.resolve();
+		defer.resolve(task);
 	});
 
 	return defer.promise;
