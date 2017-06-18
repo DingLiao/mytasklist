@@ -64,7 +64,7 @@ function update(task) {
 	let _task = task;
 	_task = _.omit(_task, '_id');
 	console.log(task);
-	Task.findByIdAndUpdate(task._id, task, function(err, task) {
+	Task.findByIdAndUpdate(task._id, _task, function(err, task) {
 			if(err) {
 				if (err) defer.reject(err.name + ': ' + err.message);
 			}
