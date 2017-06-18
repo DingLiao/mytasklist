@@ -23,22 +23,19 @@ module.exports = {
 			.catch(err => next(err));
 	},
 	update: function(req, res, next) {
-		var task = new Task(req.body);
-		Task.findByIdAndUpdate(req.params._id, task, function(err, task) {
-			if(err) {
-				return next(err);
-			}
-			return res.json(task);
-		})
+		let task = new Task(req.body);
+		taskService.update(task)
+			.then(function() {
+				return res.json(task);
+			})
+			.catch(err => next(err));
 	},
 	delete: function(req, res, next) {
 		console.log("delete, id: " + req);
-		Task.findByIdAndRemove(req.params._id, function(err, task){
-			if(err) {
-				return next(err);
-			}
-			return res.json(task);
-			
-		});
+		taskService.delete(task)
+			.then(function() {
+				return res.json(task);
+			})
+			.catch(err => next(err));
 	}
 };

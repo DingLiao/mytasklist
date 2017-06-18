@@ -58,40 +58,17 @@ function create(creatorId, task) {
 	return defer.promise;
 }
 
-function update(_id, userParam) {
+function update(task) {
 	var defer = Q.defer();
+	let _id = task._id;
+	task = _.omit(task, '_id');
 
-	User.findById(_id, function(err, user) {
-		if(err) defer.reject(err.name + ':' + err.message);
-
-		if( user.username !== userParam.username) {
-			User.findOne({username: userParam.username}, function(err, user) {
-				if(err) defer.reject(err.name + ':' + err.message);
-
-				if(user) {
-					// username already exists
-                    defer.reject('Username "' + req.body.username + '" is already taken');
-				}
-				else {
-					updateUser();
-				}
-			});
-		} else {
-			updateUser();
-		}
-	});
-
-	function updateUser() {
-		var user = new User(userParam);
-		user = _.omit(user, "_id");
-
-		User.findByIdAndUpdate(_id, user, function(err, user) {
+	Task.findByIdAndUpdate(_id, task, function(err, task) {
 			if(err) {
-				defer.reject(err.name + ': ' + err.message);
+				if (err) defer.reject(err.name + ': ' + err.message);
 			}
-			defer.resolve();
-		})
-	}
+			defer.resolve(task);
+		});
 
 	return defer.promise;
 }
