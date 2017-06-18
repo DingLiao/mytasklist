@@ -43,6 +43,7 @@ export class TaskService {
       // create authorization header with jwt token
       let currentUser = JSON.parse(localStorage.getItem('currentUser'));
       if (currentUser && currentUser.token) {
+          console.log("Generate JWT");
           let headers = new Headers({ 'Authorization': 'Bearer ' + currentUser.token });
           headers.append('Content-Type', 'application/json');
           return new RequestOptions({ headers: headers });

@@ -26,7 +26,7 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, '../client/dist')));
+app.use(express.static(path.join(__dirname, './public')));
 
 app.use(session({
 	store: new RedisStore(),
@@ -37,11 +37,21 @@ app.use(cors());
 app.use('/', index);
 
 // use JWT auth to secure the api
-app.use(expressJwt({ secret: config.sessionsecret }).unless({ path: ['/api/users/authenticate', '/api/users/register', new RegExp('/static/tasklist.*/', 'i')] }));
+app.use(expressJwt({ 
+  secret: config.sessionsecret,
+  getToken: function (req) {
+        if (req.headers.authorization && req.headers.authorization.split(' ')[0] === 'Bearer') {
+            return req.headers.authorization.split(' ')[1];
+        } else if (req.query && req.query.token) {
+            return req.query.token;
+        }
+        return null;
+    }
+   }).unless({ path: ['/api/users/authenticate', '/api/users/register', new RegExp('/static/*/', 'i')] }));
 app.use('/api', apiRouters);
 
 app.all("/static/*", function(req, res, next) {
-    res.sendfile("index.html", { root: __dirname + "/../client/dist" });
+    res.sendfile("index.html", { root: __dirname + "/public" });
 });
 
 // error handler
