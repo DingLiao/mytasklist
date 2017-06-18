@@ -23,9 +23,8 @@ module.exports = {
 			.catch(err => next(err));
 	},
 	update: function(req, res, next) {
-		let task = new Task(req.body);
-		taskService.update(task)
-			.then(function() {
+		taskService.update(req.body)
+			.then(function(task) {
 				return res.json(task);
 			})
 			.catch(err => next(err));

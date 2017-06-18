@@ -61,10 +61,8 @@ function create(creatorId, task) {
 function update(task) {
 	var defer = Q.defer();
 
-	let _task = task;
-	_task = _.omit(_task, '_id');
-	console.log(task);
-	Task.findByIdAndUpdate(task._id, _task, function(err, task) {
+	let id = task._id; 
+	Task.findByIdAndUpdate(id, _.omit(task, '_id'), function(err, task) {
 			if(err) {
 				if (err) defer.reject(err.name + ': ' + err.message);
 			}
