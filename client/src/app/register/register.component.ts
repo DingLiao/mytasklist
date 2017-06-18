@@ -20,7 +20,7 @@ export class RegisterComponent implements OnInit {
   ngOnInit() {
   	this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
   	if(this.currentUser) {
-  		this.router.navigate(['/']);
+  		this.router.navigate(['/static/home']);
   	}
   }
 
@@ -30,7 +30,7 @@ export class RegisterComponent implements OnInit {
   		.subscribe(
   			data => {
   				console.log('component: ' + data);
-  				this.router.navigate(['/login']);
+  				this.router.navigate(['/static/login']);
   			},
   			error => {
   				this.loading = false;

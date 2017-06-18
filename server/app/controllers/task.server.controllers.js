@@ -31,10 +31,10 @@ module.exports = {
 			.catch(err => next(err));
 	},
 	delete: function(req, res, next) {
-		console.log("delete, id: " + req);
-		taskService.delete(task)
+		console.log("delete, id: " + req.params._id);
+		taskService.delete(req.params._id)
 			.then(function() {
-				return res.json(task);
+				return res.sendStatus(200);
 			})
 			.catch(err => next(err));
 	}
