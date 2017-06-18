@@ -35,7 +35,7 @@ export class LoginComponent implements OnInit {
   			data => {
   				this.loading = false;
   				localStorage.setItem('currentUser', JSON.stringify(data));
-  				this.router.navigate(['/']);
+  				this.router.navigate(['/static/tasklist']);
   			},
   			error => {
   				this.loading = false;
